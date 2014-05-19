@@ -1,33 +1,44 @@
 package main
 
-import "github.com/go-martini/martini"
+import (
+    "github.com/go-martini/martini"
+    "github.com/martini-contrib/render"
 
-//import "net/http"
-import "database/sql"
-import _ "github.com/lib/pq"
-import "github.com/martini-contrib/render"
+    _ "github.com/lib/pq"
+    "github.com/go-xorm/xorm"
+)
 
-func connect() *sql.DB {
-  db, err := sql.Open("postgres", "dbname=example_app_dev sslmode=disable")
-
+func panicIf(err error) {
   if err != nil {
     panic(err)
   }
+}
 
-  return db
+func establishDbConnection() *xorm.Engine {
+  engine, err := xorm.NewEngine("postgres", "dbname=example_app_dev sslmode=disable")
+  panicIf(err)
+  return engine
+}
+
+type Products struct {
+  Id   int32  `json:"id"`
+  Code string `json:"code"`
+  Name string `json:"name"`
 }
 
 func main() {
-  m := martini.Classic()
+  app := martini.Classic()
 
-  m.Map(connect())
-  m.Use(render.Renderer())
+  app.Map(establishDbConnection())
+  app.Use(render.Renderer())
 
-  m.Get("/products", func(db *sql.DB, rnd render.Render) string {
-    products, _ := db.Query("SELECT * FROM products")
-    rnd.JSON(200, products)
-    return ""
+  // Routes
+  app.Get("/products", func(db *xorm.Engine, r render.Render) {
+    var products []Products
+    err := db.Find(&products)
+    panicIf(err)
+    r.JSON(200, products)
   })
 
-  m.Run()
+  app.Run()
 }
