@@ -7,6 +7,7 @@ import (
     _ "github.com/lib/pq"
     "github.com/go-xorm/xorm"
 
+    "net/http"
     "strconv"
 )
 
@@ -45,9 +46,15 @@ func main() {
   app.Group("/products", func(router martini.Router) {
 
     // index
-    router.Get("", func(params martini.Params, render render.Render) {
+    router.Get("", func(params martini.Params, render render.Render, request *http.Request) {
+      query     := request.URL.Query()
+      limit, _  := strconv.Atoi(query.Get("limit"))
+      offset, _ := strconv.Atoi(query.Get("offset"))
+
       var products []Product
-      err := engine.Find(&products)
+
+      err := engine.Limit(limit, offset).Find(&products)
+
       panicIf(err)
       render.JSON(200, products)
     })
