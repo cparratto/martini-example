@@ -45,18 +45,18 @@ func main() {
   app.Group("/products", func(router martini.Router) {
 
     // index
-    router.Get("", func(db *xorm.Engine, params martini.Params, render render.Render) {
+    router.Get("", func(params martini.Params, render render.Render) {
       var products []Product
-      err := db.Find(&products)
+      err := engine.Find(&products)
       panicIf(err)
       render.JSON(200, products)
     })
 
     // show
-    router.Get("/:id", func(db *xorm.Engine, params martini.Params, render render.Render){
+    router.Get("/:id", func(params martini.Params, render render.Render){
       id, err := strconv.Atoi(params["id"])
       var product = Product{Id: int32(id)}
-      found, err := db.Get(&product)
+      found, err := engine.Get(&product)
       panicIf(err)
       if found {
         render.JSON(200, product)
