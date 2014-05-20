@@ -6,6 +6,8 @@ import (
 
     _ "github.com/lib/pq"
     "github.com/go-xorm/xorm"
+
+    "strconv"
 )
 
 func panicIf(err error) {
@@ -35,12 +37,29 @@ func main() {
   app.Map(engine)
   app.Use(render.Renderer())
 
-  // Routes
-  app.Get("/products", func(db *xorm.Engine, r render.Render) {
-    var products []Products
-    err := db.Find(&products)
-    panicIf(err)
-    r.JSON(200, products)
+  app.Group("/products", func(router martini.Router) {
+
+    // index
+    router.Get("", func(db *xorm.Engine, params martini.Params, render render.Render) {
+      var products []Products
+      err := db.Find(&products)
+      panicIf(err)
+      render.JSON(200, products)
+    })
+
+    // show
+    router.Get("/:id", func(db *xorm.Engine, params martini.Params, render render.Render){
+      id, err := strconv.Atoi(params["id"])
+      var product = Products{Id: int32(id)}
+      found, err := db.Get(&product)
+      panicIf(err)
+      if found {
+        render.JSON(200, product)
+      } else {
+        render.JSON(404, map[string]string{ "error": "Not Found" })
+      }
+    })
+
   })
 
   app.Run()
