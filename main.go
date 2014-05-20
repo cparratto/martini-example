@@ -29,7 +29,10 @@ type Products struct {
 func main() {
   app := martini.Classic()
 
-  app.Map(establishDbConnection())
+  engine := establishDbConnection()
+  engine.Sync(new(Products))
+
+  app.Map(engine)
   app.Use(render.Renderer())
 
   // Routes
