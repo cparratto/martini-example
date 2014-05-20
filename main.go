@@ -22,17 +22,22 @@ func establishDbConnection() *xorm.Engine {
   return engine
 }
 
-type Products struct {
+type Product struct {
   Id   int32  `json:"id"`
   Code string `json:"code"`
   Name string `json:"name"`
+
+}
+
+func (p Product) TableName() string {
+  return "products"
 }
 
 func main() {
   app := martini.Classic()
 
   engine := establishDbConnection()
-  engine.Sync(new(Products))
+  engine.Sync(new(Product))
 
   app.Map(engine)
   app.Use(render.Renderer())
@@ -41,7 +46,7 @@ func main() {
 
     // index
     router.Get("", func(db *xorm.Engine, params martini.Params, render render.Render) {
-      var products []Products
+      var products []Product
       err := db.Find(&products)
       panicIf(err)
       render.JSON(200, products)
@@ -50,7 +55,7 @@ func main() {
     // show
     router.Get("/:id", func(db *xorm.Engine, params martini.Params, render render.Render){
       id, err := strconv.Atoi(params["id"])
-      var product = Products{Id: int32(id)}
+      var product = Product{Id: int32(id)}
       found, err := db.Get(&product)
       panicIf(err)
       if found {
