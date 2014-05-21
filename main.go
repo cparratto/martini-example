@@ -4,9 +4,12 @@ import (
     "github.com/go-martini/martini"
     "github.com/martini-contrib/render"
 
+    "github.com/martini-contrib/binding"
+
     _ "github.com/lib/pq"
     "github.com/go-xorm/xorm"
 
+    "fmt"
     "net/http"
     "strconv"
 )
@@ -24,10 +27,9 @@ func establishDbConnection() *xorm.Engine {
 }
 
 type Product struct {
-  Id   int32  `json:"id"`
-  Code string `json:"code"`
-  Name string `json:"name"`
-
+  Id   int64
+  Code string `json:"code" binding:"required"`
+  Name string `json:"name" binding:"required"`
 }
 
 func (p Product) TableName() string {
@@ -62,7 +64,7 @@ func main() {
     // show
     router.Get("/:id", func(params martini.Params, render render.Render){
       id, err := strconv.Atoi(params["id"])
-      var product = Product{Id: int32(id)}
+      var product = Product{Id: int64(id)}
       found, err := engine.Get(&product)
       panicIf(err)
       if found {
@@ -72,6 +74,17 @@ func main() {
       }
     })
 
+    // create
+    router.Post("", binding.Json(Product{}), func(p Product, r render.Render ){
+      // binding should work... but doesn't
+      success, err := engine.Insert(&p)
+      fmt.Println(success)
+      if err == nil {
+        r.JSON(201, p)
+      } else {
+        r.JSON(422, map[string]string{ "error" : "Unprocessable Entity"})
+      }
+    })
   })
 
   app.Run()
