@@ -9,6 +9,7 @@ import (
     _ "github.com/lib/pq"
     "github.com/go-xorm/xorm"
 
+    "time"
     "fmt"
     "net/http"
     "strconv"
@@ -28,8 +29,10 @@ func establishDbConnection() *xorm.Engine {
 
 type Product struct {
   Id   int64
-  Code string `json:"code" binding:"required"`
-  Name string `json:"name" binding:"required"`
+  Code string         `json:"code" binding:"required"`
+  Name string         `json:"name" binding:"required"`
+  CreatedAt time.Time `json:"created_at"`
+  UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (p Product) TableName() string {
