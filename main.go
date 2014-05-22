@@ -6,10 +6,11 @@ import (
 
     "github.com/martini-contrib/binding"
 
+    "database/sql"
     _ "github.com/lib/pq"
-    "github.com/go-xorm/xorm"
+    "github.com/coopernurse/gorp"
 
-    "fmt"
+    "time"
     "net/http"
     "strconv"
 )
@@ -20,16 +21,20 @@ func panicIf(err error) {
   }
 }
 
-func establishDbConnection() *xorm.Engine {
-  engine, err := xorm.NewEngine("postgres", "dbname=example_app_dev sslmode=disable")
+func establishDbConnection() *gorp.DbMap {
+  db, err := sql.Open("postgres", "dbname=example_app_dev sslmode=disable")
   panicIf(err)
-  return engine
+  dbmap   := &gorp.DbMap{Db: db, Dialect: gorp.PostgresDialect{}}
+  dbmap.AddTableWithName(Product{}, "products").SetKeys(true, "Id")
+  return dbmap
 }
 
 type Product struct {
   Id   int64
   Code string `json:"code" binding:"required"`
   Name string `json:"name" binding:"required"`
+  CreatedAt time.Time `db:"created_at"`
+  UpdatedAt time.Time `db:"updated_at"`
 }
 
 func (p Product) TableName() string {
@@ -39,23 +44,21 @@ func (p Product) TableName() string {
 func main() {
   app := martini.Classic()
 
-  engine := establishDbConnection()
-  engine.Sync(new(Product))
+  dbmap := establishDbConnection()
 
-  app.Map(engine)
+  app.Map(dbmap)
   app.Use(render.Renderer())
 
   app.Group("/products", func(router martini.Router) {
 
     // index
     router.Get("", func(params martini.Params, render render.Render, request *http.Request) {
-      query     := request.URL.Query()
-      limit, _  := strconv.Atoi(query.Get("limit"))
-      offset, _ := strconv.Atoi(query.Get("offset"))
+      //query     := request.URL.Query()
+      //limit, _  := strconv.Atoi(query.Get("limit"))
+      //offset, _ := strconv.Atoi(query.Get("offset"))
 
       var products []Product
-
-      err := engine.Limit(limit, offset).Find(&products)
+      _ , err := dbmap.Select(&products, "select * from products")
 
       panicIf(err)
       render.JSON(200, products)
@@ -63,11 +66,10 @@ func main() {
 
     // show
     router.Get("/:id", func(params martini.Params, render render.Render){
-      id, err := strconv.Atoi(params["id"])
+      id, _ := strconv.Atoi(params["id"])
       var product = Product{Id: int64(id)}
-      found, err := engine.Get(&product)
-      panicIf(err)
-      if found {
+      err := dbmap.SelectOne(&product, "where id = ?", int64(id))
+      if err != nil {
         render.JSON(200, product)
       } else {
         render.JSON(404, map[string]string{ "error": "Not Found" })
@@ -76,9 +78,7 @@ func main() {
 
     // create
     router.Post("", binding.Json(Product{}), func(p Product, r render.Render ){
-      // binding should work... but doesn't
-      success, err := engine.Insert(&p)
-      fmt.Println(success)
+      err := dbmap.Insert(&p)
       if err == nil {
         r.JSON(201, p)
       } else {
