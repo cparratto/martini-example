@@ -66,10 +66,11 @@ func main() {
 
     // show
     router.Get("/:id", func(params martini.Params, render render.Render){
-      id, _ := strconv.Atoi(params["id"])
-      var product = Product{Id: int64(id)}
-      err := dbmap.SelectOne(&product, "where id = ?", int64(id))
-      if err != nil {
+      id, err := strconv.Atoi(params["id"])
+      panicIf(err)
+      res, err := dbmap.Get(Product{}, id)
+      product := res.(*Product)
+      if err == nil {
         render.JSON(200, product)
       } else {
         render.JSON(404, map[string]string{ "error": "Not Found" })
