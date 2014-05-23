@@ -67,6 +67,7 @@ func main() {
 
       var limit, offset string
 
+      // There are no ORM chain methods for querying
       if query.Get("limit") != "" { limit = " LIMIT " + query.Get("limit") }
       if query.Get("offset") != "" { offset = " OFFSET " + query.Get("offset") }
 
