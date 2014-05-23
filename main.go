@@ -10,6 +10,7 @@ import (
     _ "github.com/lib/pq"
     "github.com/coopernurse/gorp"
 
+    "fmt"
     "os"
     "time"
     "net/http"
@@ -38,6 +39,9 @@ type Product struct {
   UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 
+type Products struct {
+  Collection []Product `json:"products"`
+}
 // Implement the PreInsert hook
 func (p *Product) PreInsert(s gorp.SqlExecutor) error {
     p.CreatedAt = time.Now()
@@ -125,6 +129,28 @@ func main() {
         render.JSON(404, "Not found") // Let's just say that's the reason
       }
     })
+  })
+
+  // Bulk Operations
+  app.Group("/bulk/products", func(router martini.Router){
+
+    // create
+    router.Post("", binding.Json(Products{}), func(products Products, render render.Render){
+
+      fmt.Println(&products.Collection)
+
+      // Insert does not accept &products.Collection...
+      // WIP
+      err := dbmap.Insert(&products.Collection[0])
+      if err == nil {
+        render.JSON(201, products)
+      } else {
+        render.JSON(422, err.Error())
+      }
+    })
+
+    // update
+    // delete
   })
 
   app.Run()
