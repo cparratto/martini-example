@@ -114,6 +114,17 @@ func main() {
         render.JSON(422, err.Error())
       }
     })
+
+    // destroy
+    router.Delete("/:id", func(params martini.Params, render render.Render) {
+      id, _ := strconv.ParseInt(params["id"], 0, 64)
+      _, err := dbmap.Delete(&Product{Id: id})
+      if err == nil {
+        render.JSON(204, "No content")
+      } else {
+        render.JSON(404, "Not found") // Let's just say that's the reason
+      }
+    })
   })
 
   app.Run()
