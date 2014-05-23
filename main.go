@@ -90,6 +90,19 @@ func main() {
         render.JSON(422, map[string]string{ "error" : err.Error() })
       }
     })
+
+    //update
+    // Currently there's no way to only update specific columns, update maps struct fields to table :(
+    router.Put("/:id", binding.Json(Product{}), func(product Product, render render.Render, params martini.Params){
+      id, _ := strconv.Atoi(params["id"])
+      product.Id = int64(id)
+      _, err := dbmap.Update(&product)
+      if err == nil {
+        render.JSON(200, product)
+      } else {
+        render.JSON(422, err.Error())
+      }
+    })
   })
 
   app.Run()
