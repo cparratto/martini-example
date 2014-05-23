@@ -77,17 +77,17 @@ func main() {
       if err == nil {
         render.JSON(200, product)
       } else {
-        render.JSON(404, map[string]string{ "error": "Not Found" })
+        render.JSON(404, map[string]string{ "error": err.Error() })
       }
     })
 
     // create
-    router.Post("", binding.Json(Product{}), func(p Product, r render.Render ){
-      err := dbmap.Insert(&p)
+    router.Post("", binding.Json(Product{}), func(product Product, render render.Render) {
+      err := dbmap.Insert(&product)
       if err == nil {
-        r.JSON(201, p)
+        render.JSON(201, product)
       } else {
-        r.JSON(422, map[string]string{ "error" : "Unprocessable Entity"})
+        render.JSON(422, map[string]string{ "error" : err.Error() })
       }
     })
   })
