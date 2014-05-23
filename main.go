@@ -10,6 +10,7 @@ import (
     _ "github.com/lib/pq"
     "github.com/coopernurse/gorp"
 
+    "os"
     "time"
     "net/http"
     "strconv"
@@ -22,7 +23,7 @@ func panicIf(err error) {
 }
 
 func establishDbConnection() *gorp.DbMap {
-  db, err := sql.Open("postgres", "dbname=example_app_dev sslmode=disable")
+  db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
   panicIf(err)
   dbmap   := &gorp.DbMap{Db: db, Dialect: gorp.PostgresDialect{}}
   dbmap.AddTableWithName(Product{}, "products").SetKeys(true, "Id")
