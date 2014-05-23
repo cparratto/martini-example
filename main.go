@@ -54,12 +54,15 @@ func main() {
 
     // index
     router.Get("", func(params martini.Params, render render.Render, request *http.Request) {
-      //query     := request.URL.Query()
-      //limit, _  := strconv.Atoi(query.Get("limit"))
-      //offset, _ := strconv.Atoi(query.Get("offset"))
+      query  := request.URL.Query()
+
+      var limit, offset string
+
+      if query.Get("limit") != "" { limit = " LIMIT " + query.Get("limit") }
+      if query.Get("offset") != "" { offset = " OFFSET " + query.Get("offset") }
 
       var products []Product
-      _ , err := dbmap.Select(&products, "select * from products")
+      _ , err := dbmap.Select(&products, "SELECT * FROM products" + limit + offset)
 
       panicIf(err)
       render.JSON(200, products)
