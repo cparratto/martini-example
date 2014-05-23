@@ -34,8 +34,8 @@ type Product struct {
   Id   int64
   Code string `json:"code" binding:"required"`
   Name string `json:"name" binding:"required"`
-  CreatedAt time.Time `db:"created_at"`
-  UpdatedAt time.Time `db:"updated_at"`
+  CreatedAt time.Time `json:"created_at" db:"created_at"`
+  UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 
 func (p Product) TableName() string {
