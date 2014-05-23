@@ -6,11 +6,11 @@ import (
 
     "github.com/martini-contrib/binding"
 
+    "log"
     "database/sql"
     _ "github.com/lib/pq"
     "github.com/coopernurse/gorp"
 
-    "fmt"
     "os"
     "time"
     "net/http"
@@ -28,6 +28,7 @@ func establishDbConnection() *gorp.DbMap {
   panicIf(err)
   dbmap   := &gorp.DbMap{Db: db, Dialect: gorp.PostgresDialect{}}
   dbmap.AddTableWithName(Product{}, "products").SetKeys(true, "Id")
+  dbmap.TraceOn("[gorp]", log.New(os.Stdout, "", log.Lmicroseconds))
   return dbmap
 }
 
@@ -136,9 +137,6 @@ func main() {
 
     // create
     router.Post("", binding.Json(Products{}), func(products Products, render render.Render){
-
-      fmt.Println(&products.Collection)
-
       // Insert does not accept &products.Collection...
       // WIP
       err := dbmap.Insert(&products.Collection[0])
