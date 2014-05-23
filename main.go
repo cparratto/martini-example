@@ -38,8 +38,17 @@ type Product struct {
   UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 
-func (p Product) TableName() string {
-  return "products"
+// Implement the PreInsert hook
+func (p *Product) PreInsert(s gorp.SqlExecutor) error {
+    p.CreatedAt = time.Now()
+    p.UpdatedAt = p.CreatedAt
+    return nil
+}
+
+// Implement PreUpdaye hook
+func (p *Product) PreUpdate(s gorp.SqlExecutor) error {
+    p.UpdatedAt = time.Now()
+    return nil
 }
 
 func main() {
@@ -91,8 +100,9 @@ func main() {
       }
     })
 
-    //update
+    // update
     // Currently there's no way to only update specific columns, update maps struct fields to table :(
+    // https://github.com/coopernurse/gorp/issues/92
     router.Put("/:id", binding.Json(Product{}), func(product Product, render render.Render, params martini.Params){
       id, _ := strconv.Atoi(params["id"])
       product.Id = int64(id)
