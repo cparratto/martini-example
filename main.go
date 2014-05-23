@@ -31,9 +31,9 @@ func establishDbConnection() *gorp.DbMap {
 }
 
 type Product struct {
-  Id   int64
-  Code string `json:"code" binding:"required"`
-  Name string `json:"name" binding:"required"`
+  Id   int64          `json:"id"`
+  Code string         `json:"code" binding:"required"`
+  Name string         `json:"name" binding:"required"`
   CreatedAt time.Time `json:"created_at" db:"created_at"`
   UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
