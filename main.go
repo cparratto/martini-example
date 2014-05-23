@@ -105,8 +105,8 @@ func main() {
     // Currently there's no way to only update specific columns, update maps struct fields to table :(
     // https://github.com/coopernurse/gorp/issues/92
     router.Put("/:id", binding.Json(Product{}), func(product Product, render render.Render, params martini.Params){
-      id, _ := strconv.Atoi(params["id"])
-      product.Id = int64(id)
+      id, _ := strconv.ParseInt(params["id"], 0, 64)
+      product.Id = id
       _, err := dbmap.Update(&product)
       if err == nil {
         render.JSON(200, product)
