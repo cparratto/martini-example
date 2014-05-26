@@ -13,14 +13,14 @@ import(
 
 
 func DB() *gorp.DbMap {
-  connection, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
-  if err != nil { panic(err) }
-  db := &gorp.DbMap{Db: connection, Dialect: gorp.PostgresDialect{}}
+    connection, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+    if err != nil { panic(err) }
+    db := &gorp.DbMap{Db: connection, Dialect: gorp.PostgresDialect{}}
 
-  registerTables(db)
-  enableLogging(db)
+    registerTables(db)
+    enableLogging(db)
 
-  return db
+    return db
 }
 
 func enableLogging(db *gorp.DbMap) {
@@ -28,5 +28,5 @@ func enableLogging(db *gorp.DbMap) {
 }
 
 func registerTables(db *gorp.DbMap) {
-  db.AddTableWithName(models.Product{}, "products").SetKeys(true, "Id")
+    db.AddTableWithName(models.Product{}, "products").SetKeys(true, "Id")
 }

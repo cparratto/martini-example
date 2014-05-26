@@ -82,11 +82,11 @@ func ProductsDelete(db *gorp.DbMap, params martini.Params, render render.Render)
 }
 
 func ProductsBulkCreate(products models.Products, db *gorp.DbMap, render render.Render){
-  for _, product := range products.Collection {
-    err := db.Insert(&product)
-    if err != nil { panic(err) }
-  }
+    for _, product := range products.Collection {
+        err := db.Insert(&product)
+        if err != nil { panic(err) }
+    }
 
-  render.JSON(201, products)
+    render.JSON(201, products)
 }
 

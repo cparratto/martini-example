@@ -1,13 +1,14 @@
 package main
 
-import (
+import(
     "github.com/go-martini/martini"
+
     "github.com/martini-contrib/binding"
     "github.com/martini-contrib/render"
 
     "github.com/joiggama/martini-example/app/config"
-    "github.com/joiggama/martini-example/app/models"
     "github.com/joiggama/martini-example/app/controllers"
+    "github.com/joiggama/martini-example/app/models"
 )
 
 
