@@ -43,6 +43,7 @@ type Product struct {
 type Products struct {
   Collection []Product `json:"products"`
 }
+
 // Implement the PreInsert hook
 func (p *Product) PreInsert(s gorp.SqlExecutor) error {
     p.CreatedAt = time.Now()
@@ -137,18 +138,16 @@ func main() {
 
     // create
     router.Post("", binding.Json(Products{}), func(products Products, render render.Render){
-      // Insert does not accept &products.Collection...
-      // WIP
-      err := dbmap.Insert(&products.Collection[0])
-      if err == nil {
-        render.JSON(201, products)
-      } else {
-        render.JSON(422, err.Error())
+      for _, product := range products.Collection {
+        err := dbmap.Insert(&product)
+        panicIf(err)
       }
+
+      render.JSON(201, products)
     })
 
-    // update
-    // delete
+    // Bulk modify won't be useful, since gorp overwrites every struct field mapped to the database
+    // Bulk delete, what for?
   })
 
   app.Run()
