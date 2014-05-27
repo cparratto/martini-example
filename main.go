@@ -6,6 +6,8 @@ import(
     "github.com/martini-contrib/binding"
     "github.com/martini-contrib/render"
 
+    "github.com/codegangsta/envy/lib"
+
     "github.com/joiggama/martini-example/app/config"
     "github.com/joiggama/martini-example/app/controllers"
     "github.com/joiggama/martini-example/app/models"
@@ -13,6 +15,8 @@ import(
 
 
 func main() {
+    envy.Bootstrap()
+
     app := martini.Classic()
 
     app.Map(config.DB())

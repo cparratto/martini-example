@@ -3,6 +3,10 @@
 	"GoVersion": "go1.2.2",
 	"Deps": [
 		{
+			"ImportPath": "github.com/codegangsta/envy/lib",
+			"Rev": "25e5d50415d96a367adac8bd567608d78a50bef0"
+		},
+		{
 			"ImportPath": "github.com/codegangsta/inject",
 			"Comment": "v1.0-rc1",
 			"Rev": "37d7f8432a3e684eef9b2edece76bdfa6ac85b39"
