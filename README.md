@@ -24,7 +24,36 @@
 
 * Run app `go run main.go`
 
-## WIP
+## Tests
 
-* How to run the test suite
-* Deployment instructions
+None :cry:
+
+## Deployment
+
+Deployment instructions for heroku.
+
+### Setup
+
+* Make sure to have the [heroku toolbelt](https://toolbelt.heroku.com/)
+  installed.
+
+* Then run:
+  ```bash
+  heroku create <app-name> -b https://github.com/kr/heroku-buildpack-go.git
+  ```
+
+* Add the heroku git repository to your git remotes
+
+* Install `Godep` to manage app dependencies by running:
+  `go get github.com/tools/godep`
+
+### Before pushing
+
+* Every time that you add a new a dependency, make sure run `godep save`
+  and add changed files inside `Godeps` directory.
+
+### Release
+
+* `git push <heroku-remote>` or `git push <heroku-remote> <feature-branch>:master`
+
+
