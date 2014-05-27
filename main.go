@@ -1,94 +1,36 @@
 package main
 
-import (
+import(
     "github.com/go-martini/martini"
-    "github.com/martini-contrib/render"
 
     "github.com/martini-contrib/binding"
+    "github.com/martini-contrib/render"
 
-    _ "github.com/lib/pq"
-    "github.com/go-xorm/xorm"
+    "github.com/codegangsta/envy/lib"
 
-    "time"
-    "fmt"
-    "net/http"
-    "strconv"
+    "github.com/joiggama/martini-example/app/config"
+    "github.com/joiggama/martini-example/app/controllers"
+    "github.com/joiggama/martini-example/app/models"
 )
 
-func panicIf(err error) {
-  if err != nil {
-    panic(err)
-  }
-}
-
-func establishDbConnection() *xorm.Engine {
-  engine, err := xorm.NewEngine("postgres", "dbname=example_app_dev sslmode=disable")
-  panicIf(err)
-  return engine
-}
-
-type Product struct {
-  Id   int64
-  Code string         `json:"code" binding:"required"`
-  Name string         `json:"name" binding:"required"`
-  CreatedAt time.Time `json:"created_at"`
-  UpdatedAt time.Time `json:"updated_at"`
-}
-
-func (p Product) TableName() string {
-  return "products"
-}
 
 func main() {
-  app := martini.Classic()
+    envy.Bootstrap()
 
-  engine := establishDbConnection()
-  engine.Sync(new(Product))
+    app := martini.Classic()
 
-  app.Map(engine)
-  app.Use(render.Renderer())
+    app.Map(config.DB())
 
-  app.Group("/products", func(router martini.Router) {
+    app.Use(render.Renderer())
 
-    // index
-    router.Get("", func(params martini.Params, render render.Render, request *http.Request) {
-      query     := request.URL.Query()
-      limit, _  := strconv.Atoi(query.Get("limit"))
-      offset, _ := strconv.Atoi(query.Get("offset"))
+    app.Group("/products", func(router martini.Router) {
+        router.Post("", controllers.ProductsCreate)
+        router.Delete("/:id", controllers.ProductsDelete)
+        router.Get("", controllers.ProductsIndex)
+        router.Get("/:id", binding.Json(models.Product{}), controllers.ProductsShow)
+        router.Put("/:id", binding.Json(models.Product{}), controllers.ProductsUpdate)
+        router.Post("/bulk", binding.Json(models.Products{}), controllers.ProductsBulkCreate)
+    }, controllers.ApiAuth())
+    app.Run()
 
-      var products []Product
-
-      err := engine.Limit(limit, offset).Find(&products)
-
-      panicIf(err)
-      render.JSON(200, products)
-    })
-
-    // show
-    router.Get("/:id", func(params martini.Params, render render.Render){
-      id, err := strconv.Atoi(params["id"])
-      var product = Product{Id: int64(id)}
-      found, err := engine.Get(&product)
-      panicIf(err)
-      if found {
-        render.JSON(200, product)
-      } else {
-        render.JSON(404, map[string]string{ "error": "Not Found" })
-      }
-    })
-
-    // create
-    router.Post("", binding.Json(Product{}), func(p Product, r render.Render ){
-      // binding should work... but doesn't
-      success, err := engine.Insert(&p)
-      fmt.Println(success)
-      if err == nil {
-        r.JSON(201, p)
-      } else {
-        r.JSON(422, map[string]string{ "error" : "Unprocessable Entity"})
-      }
-    })
-  })
-
-  app.Run()
 }
