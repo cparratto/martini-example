@@ -56,17 +56,17 @@ func ProductsCreate(product models.Product, db *xorm.Engine, render render.Rende
 
 // Currently there's no way to only update specific columns, update maps struct fields to table :(
 // https://github.com/coopernurse/gorp/issues/92
-//func ProductsUpdate(product models.Product, db *xorm.Engine, params martini.Params, render render.Render){
-     //id, _ := strconv.ParseInt(params["id"], 0, 64)
-     //product.Id = id
-     //_, err := db.Update(&product)
+func ProductsUpdate(product models.Product, db *xorm.Engine, params martini.Params, render render.Render){
+     id, _ := strconv.ParseInt(params["id"], 0, 64)
 
-     //if err == nil {
-         //render.JSON(200, product)
-     //} else {
-         //render.JSON(422, err.Error())
-     //}
-//}
+     _, err := db.Id(id).Update(&product)
+
+     if err == nil {
+         render.JSON(200, &product)
+     } else {
+         render.JSON(422, err.Error())
+     }
+}
 
 //func ProductsDelete(db *xorm.Engine, params martini.Params, render render.Render) {
     //id, _ := strconv.ParseInt(params["id"], 0, 64)
