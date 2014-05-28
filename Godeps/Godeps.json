@@ -12,14 +12,18 @@
 			"Rev": "37d7f8432a3e684eef9b2edece76bdfa6ac85b39"
 		},
 		{
-			"ImportPath": "github.com/coopernurse/gorp",
-			"Comment": "v1.5",
-			"Rev": "242be3eec6e4d545d0eca24b5dc71236b71ac656"
-		},
-		{
 			"ImportPath": "github.com/go-martini/martini",
 			"Comment": "v1.0",
 			"Rev": "49411a5b646861ad29a6ddd5351717a0a9c49b94"
+		},
+		{
+			"ImportPath": "github.com/go-xorm/core",
+			"Rev": "267e37572ea33e494bb50d3e926ce1f84cbcda41"
+		},
+		{
+			"ImportPath": "github.com/go-xorm/xorm",
+			"Comment": "v0.3.2-167-gbfeb6ea",
+			"Rev": "bfeb6ea19f439e841fe9de1052c71ef0885253f1"
 		},
 		{
 			"ImportPath": "github.com/lib/pq",
