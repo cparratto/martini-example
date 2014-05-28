@@ -54,8 +54,8 @@ func ProductsCreate(product models.Product, db *xorm.Engine, render render.Rende
       }
 }
 
-// Currently there's no way to only update specific columns, update maps struct fields to table :(
-// https://github.com/coopernurse/gorp/issues/92
+// It doesn't overwrite missing JSON keys mapped to table columns.
+// Doens't overwrite JSON blank string values mapped to table columns.
 func ProductsUpdate(product models.Product, db *xorm.Engine, params martini.Params, render render.Render){
      id, _ := strconv.ParseInt(params["id"], 0, 64)
 
