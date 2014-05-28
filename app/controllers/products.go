@@ -80,11 +80,6 @@ func ProductsDelete(db *xorm.Engine, params martini.Params, render render.Render
 }
 
 func ProductsBulkCreate(products models.Products, db *xorm.Engine, render render.Render){
-    //for _, product := range products.Collection {
-        //_, err := db.Insert(&product)
-        //if err != nil { panic(err) }
-    //}
-
     _, err := db.Insert(&products.Collection)
 
     if err == nil {
