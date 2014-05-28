@@ -16,8 +16,13 @@ func DB() *xorm.Engine {
     if err != nil { panic(err) }
 
     registerTables(db)
+    enableLogging(db)
 
     return db
+}
+
+func enableLogging(db *xorm.Engine) {
+    db.ShowSQL = true
 }
 
 func registerTables(db *xorm.Engine) {
