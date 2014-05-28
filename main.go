@@ -25,7 +25,7 @@ func main() {
 
     app.Group("/products", func(router martini.Router) {
         router.Post("", binding.Json(models.Product{}), controllers.ProductsCreate)
-        //router.Delete("/:id", controllers.ProductsDelete)
+        router.Delete("/:id", controllers.ProductsDelete)
         router.Get("", controllers.ProductsIndex)
         router.Get("/:id", controllers.ProductsShow)
         router.Put("/:id", binding.Json(models.Product{}), controllers.ProductsUpdate)

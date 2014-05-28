@@ -68,16 +68,16 @@ func ProductsUpdate(product models.Product, db *xorm.Engine, params martini.Para
      }
 }
 
-//func ProductsDelete(db *xorm.Engine, params martini.Params, render render.Render) {
-    //id, _ := strconv.ParseInt(params["id"], 0, 64)
-    //_, err := db.Delete(&models.Product{Id: id})
+func ProductsDelete(db *xorm.Engine, params martini.Params, render render.Render) {
+    id, _ := strconv.ParseInt(params["id"], 0, 64)
+    _, err := db.Delete(&models.Product{Id: id})
 
-    //if err == nil {
-        //render.JSON(204, "No content")
-    //} else {
-        //render.JSON(404, "Not found") // Let's just say that's the reason
-    //}
-//}
+    if err == nil {
+        render.JSON(204, "No content")
+    } else {
+        render.JSON(404, "Not found") // Let's just say that's the reason
+    }
+}
 
 //func ProductsBulkCreate(products models.Products, db *xorm.Engine, render render.Render){
     //for _, product := range products.Collection {
