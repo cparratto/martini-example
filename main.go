@@ -29,7 +29,7 @@ func main() {
         router.Get("", controllers.ProductsIndex)
         router.Get("/:id", controllers.ProductsShow)
         router.Put("/:id", binding.Json(models.Product{}), controllers.ProductsUpdate)
-        //router.Post("/bulk", binding.Json(models.Products{}), controllers.ProductsBulkCreate)
+        router.Post("/bulk", binding.Json(models.Products{}), controllers.ProductsBulkCreate)
     }, controllers.ApiAuth())
 
     app.Run()

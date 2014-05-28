@@ -79,12 +79,18 @@ func ProductsDelete(db *xorm.Engine, params martini.Params, render render.Render
     }
 }
 
-//func ProductsBulkCreate(products models.Products, db *xorm.Engine, render render.Render){
+func ProductsBulkCreate(products models.Products, db *xorm.Engine, render render.Render){
     //for _, product := range products.Collection {
-        //err := db.Insert(&product)
+        //_, err := db.Insert(&product)
         //if err != nil { panic(err) }
     //}
 
-    //render.JSON(201, products)
-//}
+    _, err := db.Insert(&products.Collection)
+
+    if err == nil {
+      render.JSON(201, products)
+    } else {
+      render.JSON(422, map[string]string{ "error" : err.Error() })
+    }
+}
 
