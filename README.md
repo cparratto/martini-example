@@ -15,7 +15,7 @@
 
 * Create `.env` file:
   ```
-  DATABASE_URL="dbaname=example_app_dev sslmode=disable"
+  DATABASE_URL="daname=example_app_dev sslmode=disable"
   API_USERNAME=<username>
   API_PASSWORD=<password>
   ```
