@@ -26,7 +26,7 @@ func main() {
 		//router.Post("", binding.Json(models.Product{}), controllers.ProductsCreate)
 		//router.Delete("/:id", controllers.ProductsDelete)
 		router.Get("", controllers.ProductsIndex)
-		//router.Get("/:id", controllers.ProductsShow)
+		router.Get("/:id", controllers.ProductsShow)
 		//router.Put("/:id", binding.Json(models.Product{}), controllers.ProductsUpdate)
 		//router.Post("/bulk", binding.Json(models.Products{}), controllers.ProductsBulkCreate)
 	}, controllers.ApiAuth())

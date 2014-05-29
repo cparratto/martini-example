@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/joiggama/hood"
+
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 
@@ -29,19 +30,21 @@ func ProductsIndex(db *hood.Hood, params martini.Params, render render.Render, r
 
 }
 
-//func ProductsShow(db *hood.Hood, params martini.Params, render render.Render) {
-	//id, err := strconv.Atoi(params["id"])
-	//if err != nil {
-		//panic(err)
-	//}
-	//product, err := db.Get(models.Product{}, id)
+func ProductsShow(db *hood.Hood, params martini.Params, render render.Render) {
+	id, err := strconv.Atoi(params["id"])
+	if err != nil {
+		panic(err)
+	}
 
-	//if err == nil {
-		//render.JSON(200, product)
-	//} else {
-		//render.JSON(404, map[string]string{"error": err.Error()})
-	//}
-//}
+	var products []models.Products
+	err = db.Where("id", "=", id).Find(&products)
+
+	if err == nil {
+		render.JSON(200, products[0])
+	} else {
+		render.JSON(404, map[string]string{"error": err.Error()})
+	}
+}
 
 //func ProductsCreate(product models.Product, db *hood.Hood, render render.Render) {
 	//err := db.Insert(&product)
