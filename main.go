@@ -8,9 +8,9 @@ import(
 
     "github.com/codegangsta/envy/lib"
 
-    "github.com/joiggama/martini-example/app/config"
     "github.com/joiggama/martini-example/app/controllers"
     "github.com/joiggama/martini-example/app/models"
+    "github.com/joiggama/martini-example/config"
 )
 
 

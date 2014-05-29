@@ -10,8 +10,8 @@
 
 * Create the database `createdb example_app_dev`
 
-* Populate it using the example `example_app_dev.sql` file:
-  `psql -d example_app_dev < example_app_dev.sql`
+* Populate it using the example `db/seeds.sql` file:
+  `psql -d example_app_dev < db/seeds.sql`
 
 * Create `.env` file:
   ```
