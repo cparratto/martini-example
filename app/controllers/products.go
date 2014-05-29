@@ -80,13 +80,12 @@ func ProductsDelete(db *hood.Hood, params martini.Params, render render.Render) 
 	}
 }
 
-//func ProductsBulkCreate(products models.Products, db *hood.Hood, render render.Render) {
-	//for _, product := range products.Collection {
-		//err := db.Insert(&product)
-		//if err != nil {
-			//panic(err)
-		//}
-	//}
+func ProductsBulkCreate(collection models.ProductsCollection, db *hood.Hood, render render.Render) {
+	_, err := db.SaveAll(&collection.Elements)
 
-	//render.JSON(201, products)
-//}
+	if err == nil {
+		render.JSON(201, &collection)
+	} else {
+		render.JSON(422, err.Error())
+	}
+}

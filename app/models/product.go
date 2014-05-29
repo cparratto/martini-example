@@ -1,7 +1,7 @@
 package models
 
 import (
-  "github.com/joiggama/hood"
+	"github.com/joiggama/hood"
 )
 
 type Products struct {
@@ -12,19 +12,6 @@ type Products struct {
 	UpdatedAt hood.Updated `json:"updated_at"`
 }
 
-//type Products struct {
-	//Collection []Product `json:"products"`
-//}
-
-// Timestamps
-
-//func (p *Product) PreInsert(s gorp.SqlExecutor) error {
-	//p.CreatedAt = time.Now()
-	//p.UpdatedAt = p.CreatedAt
-	//return nil
-//}
-
-//func (p *Product) PreUpdate(s gorp.SqlExecutor) error {
-	//p.UpdatedAt = time.Now()
-	//return nil
-//}
+type ProductsCollection struct {
+	Elements []Products `json:"products"`
+}
