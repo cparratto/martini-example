@@ -1,14 +1,10 @@
 package config
 
 import (
-	//"database/sql"
-	//"log"
 	"os"
 
 	"github.com/joiggama/hood"
 	_ "github.com/lib/pq"
-
-	//"github.com/joiggama/martini-example/app/models"
 )
 
 func DB() *hood.Hood {
@@ -18,16 +14,5 @@ func DB() *hood.Hood {
 		panic(err)
 	}
 
-	//registerTables(db)
-	//enableLogging(db)
-
 	return db
 }
-
-//func enableLogging(db *gorp.DbMap) {
-	//db.TraceOn("[gorp]", log.New(os.Stdout, "", log.Lmicroseconds))
-//}
-
-//func registerTables(db *gorp.DbMap) {
-	//db.AddTableWithName(models.Product{}, "products").SetKeys(true, "Id")
-//}
