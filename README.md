@@ -56,4 +56,8 @@ Deployment instructions for heroku.
 
 * `git push <heroku-remote>` or `git push <heroku-remote> <feature-branch>:master`
 
+### Notes for XORM
 
+Xorm doesn't support postgres URL's format, so, in order to deploy to
+heroku you'll need to change the `DATABASE_URL` environment variable
+following [this format](http://godoc.org/github.com/lib/pq#hdr-Connection_String_Parameters)
