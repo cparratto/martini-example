@@ -14,9 +14,8 @@ import (
 func ProductsIndex(db *hood.Hood, params martini.Params, render render.Render, request *http.Request) {
 	query := request.URL.Query()
 
-  limit, _  := strconv.Atoi(query.Get("limit"))
-  offset, _ := strconv.Atoi(query.Get("offset"))
-
+	limit, _ := strconv.Atoi(query.Get("limit"))
+	offset, _ := strconv.Atoi(query.Get("offset"))
 
 	var products []models.Products
 	err := db.Limit(limit).Offset(offset).Find(&products)
