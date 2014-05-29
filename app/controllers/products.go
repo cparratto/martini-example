@@ -46,14 +46,14 @@ func ProductsShow(db *hood.Hood, params martini.Params, render render.Render) {
 	}
 }
 
-//func ProductsCreate(product models.Product, db *hood.Hood, render render.Render) {
-	//err := db.Insert(&product)
-	//if err == nil {
-		//render.JSON(201, &product)
-	//} else {
-		//render.JSON(422, map[string]string{"error": err.Error()})
-	//}
-//}
+func ProductsCreate(product models.Products, db *hood.Hood, render render.Render) {
+	_, err := db.Save(&product)
+	if err == nil {
+		render.JSON(201, &product)
+	} else {
+		render.JSON(422, map[string]string{"error": err.Error()})
+	}
+}
 
 //// Currently there's no way to only update specific columns, update maps struct fields to table :(
 //// https://github.com/coopernurse/gorp/issues/92
