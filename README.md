@@ -23,10 +23,12 @@
 
 * Create `.env` file:
   ```
-  DATABASE_URL="daname=example_app_dev sslmode=disable"
+  DATABASE_URL="dbname=example_app_dev sslmode=disable"
   API_USERNAME=<username>
   API_PASSWORD=<password>
   ```
+  See [lib/pq](http://godoc.org/github.com/lib/pq) docs
+  to see more details about connection parameters
 
 * Run `go get` to install app dependencies
 
