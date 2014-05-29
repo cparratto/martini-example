@@ -69,16 +69,16 @@ func ProductsUpdate(product models.Products, db *hood.Hood, params martini.Param
 	}
 }
 
-//func ProductsDelete(db *hood.Hood, params martini.Params, render render.Render) {
-	//id, _ := strconv.ParseInt(params["id"], 0, 64)
-	//_, err := db.Delete(&models.Product{Id: id})
+func ProductsDelete(db *hood.Hood, params martini.Params, render render.Render) {
+	id, _ := strconv.ParseInt(params["id"], 0, 64)
+	_, err := db.Delete(&models.Products{Id: hood.Id(id)})
 
-	//if err == nil {
-		//render.JSON(204, "No content")
-	//} else {
-		//render.JSON(404, "Not found") // Let's just say that's the reason
-	//}
-//}
+	if err == nil {
+		render.JSON(204, "No content")
+	} else {
+		render.JSON(404, "Not found") // Let's just say that's the reason
+	}
+}
 
 //func ProductsBulkCreate(products models.Products, db *hood.Hood, render render.Render) {
 	//for _, product := range products.Collection {
