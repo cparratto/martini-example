@@ -3,7 +3,15 @@
 
 ## System dependencies
 
-* Install Go `brew install go`
+### Installing Go
+
+  * Install Go `brew install go`
+  * Setup your `Go` environment:
+    ```
+      export GOPATH=<Your Go working directory here>
+      export PATH="$PATH:$GOPATH/bin"
+    ```
+
 * Install Postgres `brew install postgres`
 
 ## Configuration
