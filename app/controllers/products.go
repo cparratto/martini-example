@@ -55,19 +55,19 @@ func ProductsCreate(product models.Products, db *hood.Hood, render render.Render
 	}
 }
 
-//// Currently there's no way to only update specific columns, update maps struct fields to table :(
-//// https://github.com/coopernurse/gorp/issues/92
-//func ProductsUpdate(product models.Product, db *hood.Hood, params martini.Params, render render.Render) {
-	//id, _ := strconv.ParseInt(params["id"], 0, 64)
-	//product.Id = id
-	//_, err := db.Update(&product)
+// Currently there's no way to only update specific columns, update maps struct fields to table :(
+func ProductsUpdate(product models.Products, db *hood.Hood, params martini.Params, render render.Render) {
+	id, _ := strconv.ParseInt(params["id"], 0, 64)
+	product.Id = hood.Id(id)
 
-	//if err == nil {
-		//render.JSON(200, product)
-	//} else {
-		//render.JSON(422, err.Error())
-	//}
-//}
+	_, err := db.Save(&product)
+
+	if err == nil {
+		render.JSON(200, product)
+	} else {
+		render.JSON(422, err.Error())
+	}
+}
 
 //func ProductsDelete(db *hood.Hood, params martini.Params, render render.Render) {
 	//id, _ := strconv.ParseInt(params["id"], 0, 64)
