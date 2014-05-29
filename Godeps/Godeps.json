@@ -12,14 +12,13 @@
 			"Rev": "37d7f8432a3e684eef9b2edece76bdfa6ac85b39"
 		},
 		{
-			"ImportPath": "github.com/coopernurse/gorp",
-			"Comment": "v1.5",
-			"Rev": "242be3eec6e4d545d0eca24b5dc71236b71ac656"
-		},
-		{
 			"ImportPath": "github.com/go-martini/martini",
 			"Comment": "v1.0",
 			"Rev": "49411a5b646861ad29a6ddd5351717a0a9c49b94"
+		},
+		{
+			"ImportPath": "github.com/joiggama/hood",
+			"Rev": "d935882cc6f0241dcc91dc74c75f60cf261e6449"
 		},
 		{
 			"ImportPath": "github.com/lib/pq",
@@ -28,10 +27,6 @@
 		{
 			"ImportPath": "github.com/martini-contrib/auth",
 			"Rev": "a455012474163bc03aa53b2be38ac603d2ae9474"
-		},
-		{
-			"ImportPath": "github.com/martini-contrib/binding",
-			"Rev": "e20ce50c10d6e02d9db60e055c0600bb208b8653"
 		},
 		{
 			"ImportPath": "github.com/martini-contrib/render",

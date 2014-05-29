@@ -1,7 +1,7 @@
 package models
 
 import (
-  "github.com/eaigner/hood"
+  "github.com/joiggama/hood"
 )
 
 type Products struct {

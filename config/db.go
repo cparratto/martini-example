@@ -5,7 +5,7 @@ import (
 	//"log"
 	"os"
 
-	"github.com/eaigner/hood"
+	"github.com/joiggama/hood"
 	_ "github.com/lib/pq"
 
 	//"github.com/joiggama/martini-example/app/models"
