@@ -1,34 +1,35 @@
 package config
 
-import(
-    "database/sql"
-    "os"
-    "log"
+import (
+	"database/sql"
+	"log"
+	"os"
 
-    _ "github.com/lib/pq"
-    "github.com/coopernurse/gorp"
+	"github.com/coopernurse/gorp"
+	_ "github.com/lib/pq"
 
-    "github.com/joiggama/martini-example/app/models"
+	"github.com/joiggama/martini-example/app/models"
 )
 
-
 func DB() *gorp.DbMap {
-    connection, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	connection, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 
-    if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
-    db := &gorp.DbMap{Db: connection, Dialect: gorp.PostgresDialect{}}
+	db := &gorp.DbMap{Db: connection, Dialect: gorp.PostgresDialect{}}
 
-    registerTables(db)
-    enableLogging(db)
+	registerTables(db)
+	enableLogging(db)
 
-    return db
+	return db
 }
 
 func enableLogging(db *gorp.DbMap) {
-    db.TraceOn("[gorp]", log.New(os.Stdout, "", log.Lmicroseconds))
+	db.TraceOn("[gorp]", log.New(os.Stdout, "", log.Lmicroseconds))
 }
 
 func registerTables(db *gorp.DbMap) {
-    db.AddTableWithName(models.Product{}, "products").SetKeys(true, "Id")
+	db.AddTableWithName(models.Product{}, "products").SetKeys(true, "Id")
 }
