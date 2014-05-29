@@ -5,14 +5,19 @@
 
 ### Installing Go
 
-  * Install Go `brew install go`
-  * Setup your `Go` environment:
-    ```
-      export GOPATH=<Your Go working directory here>
-      export PATH="$PATH:$GOPATH/bin"
-    ```
+* Install Go `brew install go`
+* Setup your `Go` environment:
+
+  ```
+  export GOPATH=<Your Go working directory here>
+  export PATH="$PATH:$GOPATH/bin"
+  ```
+
+### Installing Postgres
 
 * Install Postgres `brew install postgres`
+
+  Alternatively, use [postgres app](http://postgresapp.com).
 
 ## Configuration
 
@@ -23,10 +28,12 @@
 
 * Create `.env` file:
   ```
-  DATABASE_URL="daname=example_app_dev sslmode=disable"
+  DATABASE_URL="dbname=example_app_dev sslmode=disable"
   API_USERNAME=<username>
   API_PASSWORD=<password>
   ```
+  See [lib/pq](http://godoc.org/github.com/lib/pq) docs
+  to see more details about connection parameters
 
 * Run `go get` to install app dependencies
 
