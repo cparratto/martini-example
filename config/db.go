@@ -1,30 +1,31 @@
 package config
 
-import(
-    "os"
+import (
+	"os"
 
-    _ "github.com/lib/pq"
-    "github.com/go-xorm/xorm"
+	"github.com/go-xorm/xorm"
+	_ "github.com/lib/pq"
 
-    "github.com/joiggama/martini-example/app/models"
+	"github.com/joiggama/martini-example/app/models"
 )
 
-
 func DB() *xorm.Engine {
-    db, err := xorm.NewEngine("postgres", os.Getenv("DATABASE_URL"))
+	db, err := xorm.NewEngine("postgres", os.Getenv("DATABASE_URL"))
 
-    if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
-    registerTables(db)
-    enableLogging(db)
+	registerTables(db)
+	enableLogging(db)
 
-    return db
+	return db
 }
 
 func enableLogging(db *xorm.Engine) {
-    db.ShowSQL = true
+	db.ShowSQL = true
 }
 
 func registerTables(db *xorm.Engine) {
-    db.Sync(new(models.Product))
+	db.Sync(new(models.Product))
 }
