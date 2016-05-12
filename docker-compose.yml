@@ -1,0 +1,19 @@
+---
+version: '2'
+services:
+  common:
+    build: "."
+    environment:
+      DATABASE_URL: postgres://postgres:PNzOlkeO9a5WuzZoqRdooA@db:5432/postgres
+  app:
+    extends:
+      service: common
+    command: martini-example
+    links:
+    - db
+    ports:
+    - 3000:3000
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: PNzOlkeO9a5WuzZoqRdooA

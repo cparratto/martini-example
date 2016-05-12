@@ -1,0 +1,43 @@
+{
+  "container_definitions": [
+    {
+      "name": "app",
+      "image": "",
+      "environment": [
+        {
+          "name": "DATABASE_URL",
+          "value": "postgres://postgres:PNzOlkeO9a5WuzZoqRdooA@db:5432/postgres"
+        }
+      ],
+      "links": [
+        "db"
+      ],
+      "run_command": "/app/bin/app",
+      "port_mappings": [
+        {
+          "protocol": "tcp",
+          "container_port": 3000,
+          "host_port": 0
+        }
+      ]
+    },
+    {
+      "name": "db",
+      "image": "postgres",
+      "port_mappings": [
+        {
+          "protocol": "tcp",
+          "container_port": 5432,
+          "host_port": 0
+        }
+      ],
+      "environment": [
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "PNzOlkeO9a5WuzZoqRdooA"
+        }
+      ]
+    }
+  ],
+  "family": "cparrattomartini-example"
+}
